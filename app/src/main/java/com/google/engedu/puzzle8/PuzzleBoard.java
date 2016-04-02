@@ -25,9 +25,9 @@ public class PuzzleBoard {
         Bitmap currentBitmap;
         Bitmap fullSize = Bitmap.createScaledBitmap(bitmap, parentWidth, parentWidth, false);
         int tileSize = parentWidth/NUM_TILES;
-        Log.d("buggy","parentWidth" + Integer.toString(parentWidth));
-        Log.d("buggy","number tiles" + Integer.toString(NUM_TILES));
-        Log.d("buggy","tile width" +Integer.toString(tileSize));
+        //Log.d("buggy","parentWidth" + Integer.toString(parentWidth));
+        //Log.d("buggy","number tiles" + Integer.toString(NUM_TILES));
+        //Log.d("buggy","tile width" +Integer.toString(tileSize));
         PuzzleTile newTile;
         int xStart = 0;
         int yStart = 0;
@@ -43,18 +43,32 @@ public class PuzzleBoard {
         }
         steps = 0;
     }
-
-    public ArrayList<PuzzleBoard> getPreviousBoards(){
+    public int getSteps(){return steps;}
+    /*public ArrayList<PuzzleBoard> getPreviousBoards(){
+        Log.d("buggy","recursion");
         if(this.previousBoard == null){
-            ArrayList<PuzzleBoard> base = new ArrayList<>();
-            base.add(this);
-            return base;
+            //ArrayList<PuzzleBoard> base = new ArrayList<>();
+            //base.add(this);
+            //return base;
+            return new ArrayList<PuzzleBoard>();
         }
         else{
             ArrayList<PuzzleBoard> temp = previousBoard.getPreviousBoards();
             temp.add(this);
             return temp;
         }
+    }*/
+    public ArrayList<PuzzleBoard> getPreviousBoards(){
+        //Log.d("buggy","winner");
+        ArrayList<PuzzleBoard> victory = new ArrayList<>();
+        victory.add(this);
+        int lister = 0;
+        while(victory.get(lister).previousBoard != null){
+            //Log.d("buggy", "lister= " + lister);
+            victory.add(victory.get(lister).previousBoard);
+            lister++;
+        }
+        return victory;
     }
 
     PuzzleBoard(PuzzleBoard otherBoard) {
@@ -65,8 +79,8 @@ public class PuzzleBoard {
 
     public void reset() {
         // Nothing for now but you may have things to reset once you implement the solver.
-        steps=0;
-        previousBoard = null;
+        this.steps=0;
+        this.previousBoard = null;
     }
 
     @Override
